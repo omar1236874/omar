@@ -7,7 +7,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Run docker compose
+      - name: Run docker-compose
         run: |
           cd /home/cybersecurity/Desktop/my_project
           docker compose up -d
