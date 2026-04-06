@@ -1,55 +1,14 @@
-name: CI/CD
+name: Run Docker Compose
 
-on:
-  push:
-    branches:
-      - main  # or your default branch
+on: push
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  run-docker:
+    runs-on: self-hosted
 
     steps:
-    # 1. Checkout code
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    # 2. Set up Docker Buildx (multi-platform builder)
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    # 3. Log in to Docker Hub (or GitHub Container Registry)
-    - name: Log in to Docker
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-
-    # 4. Build and push backend image
-    - name: Build and push backend image
-      uses: docker/build-push-action@v5
-      with:
-        context: ./backend
-        push: true
-        tags: your-docker-username/backend:latest
-
-    # 5. Build and push frontend image
-    - name: Build and push frontend image
-      uses: docker/build-push-action@v5
-      with:
-        context: ./frontend
-        push: true
-        tags: your-docker-username/frontend:latest
-
-    # 6. Deploy to server via SSH
-    - name: Deploy to server
-      uses: appleboy/ssh-action@v0.1.9
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        port: ${{ secrets.SERVER_PORT }}
-        script: |
-          cd /home/cybersecurity/omar
-          docker-compose pull
-          docker-compose up -d --build
+      - name: Run docker compose
+        run: |
+          cd /home/cybersecurity/Desktop/my_project
+          docker compose up -d
+ 
